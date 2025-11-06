@@ -38,9 +38,24 @@ AUTH_USER_MODEL = 'user.User'
 
 
 # Celery / Redis
-CELERY_BROKER_URL = config('CELERY_BROKER_URL')
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND')
-
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+CELERY_BEAT_SCHEDULE = {
+    # Exemplo: atualizar preços top 100 moedas a cada 2 minutos
+    'update_coin_prices': {
+        'task': 'coinpricecache.tasks.update_coin_prices_cache',
+        'schedule': 120.0,  # em segundos
+    },
+    # Exemplo: verificar alertas a cada 5 minutos
+    'check_price_alerts': {
+        'task': 'portfolioholding.tasks.check_price_alerts',
+        'schedule': 300.0,
+    },
+}
 
 
 # Application definition
