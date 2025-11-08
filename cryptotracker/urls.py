@@ -9,6 +9,7 @@ from portfolioholding.api import viewsets as portfolioholdingviewsets
 from pricealert.api import viewsets as pricealertviewsets
 from notification.api import viewsets as notificationviewsets
 from coinpricecache.views import CoinListView, CoinDetailView, CoinChartView
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 
 route = routers.DefaultRouter()
@@ -20,6 +21,9 @@ route.register(r'notifications', notificationviewsets.NotificationViewSet, basen
 
 
 urlpatterns = [
+    # Necessário para o Swagger funcionar (mas não precisa expor no README)
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
     path('admin/', admin.site.urls),
     path('api/', include(route.urls)),  #para todas rotas terem api/ na url.
     path('api/auth/', include('authentication.urls')),

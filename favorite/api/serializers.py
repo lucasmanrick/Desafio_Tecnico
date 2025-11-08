@@ -12,13 +12,14 @@ class FavoriteSerializer(serializers.ModelSerializer):
         coin_id = validated_data.get('coin_id')
 
         response = get_coin_detail(coin_id)
-        if response.status_code != 200:
+        print (response)
+        if not response:
             raise serializers.ValidationError({"coin_id": "Coin not found"})
 
-        coin_data = response.json()
-        validated_data['coin_name'] = coin_data['name']
-        validated_data['coin_symbol'] = coin_data['symbol']
-        validated_data['coin_image'] = coin_data['image']
+        coin_data = response
+        validated_data['coin_name'] = coin_data.get("name")
+        validated_data['coin_symbol'] = coin_data.get('symbol')
+        validated_data['coin_image'] = coin_data.get('image', {}).get('large')
 
 
         return super().create(validated_data)

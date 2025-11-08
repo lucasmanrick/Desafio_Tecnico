@@ -83,15 +83,6 @@ def get_coin_detail (coin_id: str, vs_currency: str = 'usd') -> Optional[Dict]:
 
 
 
-def get_current_price(coin_id: str, vs_currency: str = 'usd') -> Optional[float]:
-    url = f'{COINGECKO_BASE}/simple/price'
-    params = {'ids': coin_id, 'vs_currencies': vs_currency}
-    data = _safe_get(url, params=params)
-    if not data:
-        return None
-    return data.get(coin_id, {}).get(vs_currency)
-
-
 
 def get_coin_chart(coin_id: str, vs_currency: str = "usd", days: int = 7) -> Optional[Dict[str, Any]]:
     """
