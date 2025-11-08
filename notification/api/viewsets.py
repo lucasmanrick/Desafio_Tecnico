@@ -4,4 +4,9 @@ from notification import models
 
 class NotificationViewSet (viewsets.ModelViewSet):
     serializer_class = serializers.NotificationSerializer
-    queryset = models.Notification.objects.all()
+
+
+
+    def get_queryset(self):
+        # retorna apenas notificações do usuário logado
+        return self.queryset.filter(user=self.request.user)

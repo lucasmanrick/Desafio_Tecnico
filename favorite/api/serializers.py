@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from favorite import models
-import requests
+from coinpricecache.services.coingecko import get_coin_detail
 
 class FavoriteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -11,7 +11,7 @@ class FavoriteSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         coin_id = validated_data.get('coin_id')
 
-        response = requests.get(f"http://localhost:8000/api/coins/{coin_id}/")
+        response = get_coin_detail(coin_id)
         if response.status_code != 200:
             raise serializers.ValidationError({"coin_id": "Coin not found"})
 

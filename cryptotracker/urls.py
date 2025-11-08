@@ -9,6 +9,7 @@ from portfolioholding.api import viewsets as portfolioholdingviewsets
 from pricealert.api import viewsets as pricealertviewsets
 from notification.api import viewsets as notificationviewsets
 from coinpricecache.views import CoinListView, CoinDetailView, CoinChartView
+from notification.api.viewsets import  
 
 route = routers.DefaultRouter()
 
@@ -25,4 +26,6 @@ urlpatterns = [
     path('api/coins/', CoinListView.as_view()),  # GET /api/coins/
     path('api/coins/<str:coin_id>/', CoinDetailView.as_view()),      # GET /api/coins/<coin_id>/
     path('api/coins/<str:coin_id>/chart/', CoinChartView.as_view()),  # GET /api/coins/<coin_id>/chart/
+    path('api/notifications/<str:coin_id>/read/', .as_view()),  # PATH /api/notifications/{id}/read/
+
 ]

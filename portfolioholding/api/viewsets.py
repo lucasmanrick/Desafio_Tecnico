@@ -12,7 +12,6 @@ from coinpricecache.services.coingecko import get_coin_detail
 
 class PortfolioHoldingViewSet (viewsets.ModelViewSet):
     serializer_class = serializers.PortfolioHoldingSerializer
-    queryset = models.PortfolioHolding.objects.all()
 
     def get_queryset(self):
         return models.PortfolioHolding.objects.filter(user=self.request.user)
@@ -69,14 +68,27 @@ class PortfolioHoldingViewSet (viewsets.ModelViewSet):
             coin_image=coin_image,
             amount=amount,
             purchase_price_usd=purchase_price_usd,
-            current_price_usd=current_price_usd,
-            invested_value_usd=invested_value,
-            current_value_usd=current_value,
-            profit_usd=profit,
-            profit_percentage=profit_percentage,
-            purchase_date=purchase_date,
-            created_at=datetime.now(),
+            purchase_date=purchase_date
         )
 
-        serializer = self.get_serializer(holding)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        response_json = {
+        "id": str(holding.id),
+        "coin_id": holding.coin_id,
+        "coin_name": holding.coin_name,
+        "coin_symbol": holding.coin_symbol,
+        "coin_image": holding.coin_image,
+        "amount": float(round(holding.amount, 10)),
+        "purchase_price_usd": float(round(holding.purchase_price_usd, 2)),
+        "current_price_usd": float(round(current_price_usd, 2)),
+        "invested_value_usd": float(round(invested_value, 2)),
+        "current_value_usd": float(round(current_value, 2)),
+        "profit_usd": float(round(profit, 2)),
+        "profit_percentage": round(float(profit_percentage), 2),
+        "purchase_date": holding.purchase_date.isoformat() + "Z",
+        "created_at": holding.created_at.isoformat() + "Z",
+        "updated_at": holding.updated_at.isoformat() + "Z",
+    }
+        
+
+
+        return Response(response_json, status=status.HTTP_201_CREATED)
