@@ -1,15 +1,15 @@
 import requests
 import time
-import os
+from decouple import config
 from typing import Dict,List,Optional, Any
 from .cache import get_cached, set_cached
 
 
-COINGECKO_BASE = os.getenv('COINGECKO_API_URL')
+COINGECKO_BASE = config('COINGECKO_API_URL')
 
-COIN_LIST_CACHE_TTL = int(os.getenv('COIN_LIST_CACHE_TTL'))
-COIN_DETAIL_CACHE_TTL = int(os.getenv('COIN_DETAIL_CACHE_TTL'))
-COIN_CHART_CACHE_TTL = int(os.getenv("COIN_CHART_CACHE_TTL")) 
+COIN_LIST_CACHE_TTL = int(config('COIN_LIST_CACHE_TTL'))
+COIN_DETAIL_CACHE_TTL = int(config('COIN_DETAIL_CACHE_TTL'))
+COIN_CHART_CACHE_TTL = int(config("COIN_CHART_CACHE_TTL")) 
 
 def _safe_get (endpoint, params: dict = None, retries: int = 2, waitimer: float = 1.0 ) -> Optional[dict]:
     for attempt in range(retries + 1):

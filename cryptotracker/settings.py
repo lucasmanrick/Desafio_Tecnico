@@ -1,6 +1,8 @@
 from pathlib import Path
 from datetime import timedelta
 from decouple import config
+import dj_database_url
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -120,14 +122,9 @@ WSGI_APPLICATION = 'cryptotracker.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB'),
-        'USER': config('POSTGRES_USER'),
-        'PASSWORD': config('POSTGRES_PASSWORD'),
-        'HOST': config('POSTGRES_HOST'),
-        'PORT': config('POSTGRES_PORT', cast=int, default=5432),
-    }
+    'default': dj_database_url.config(
+        default=os.getenv("DATABASE_URL")  # ou config("DATABASE_URL") se usar decouple
+    )
 }
 
 

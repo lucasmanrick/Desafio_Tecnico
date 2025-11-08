@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # aguarda serviços opcionais (postgres) - simples/curto; em produção use healthchecks
 sleep 3

@@ -1,10 +1,9 @@
-# coins/services/cache.py
-import os
+from decouple import config
 import json
 import redis
 from typing import Any, Optional
 
-REDIS_URL = os.getenv('REDIS_URL', os.getenv('CELERY_BROKER_URL'))
+REDIS_URL = config('REDIS_URL', 'CELERY_BROKER_URL')
 redis_client = redis.from_url(REDIS_URL, decode_responses=True)
 
 def set_cached(key: str, value: Any, ttl: int = 120) -> None:

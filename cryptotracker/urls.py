@@ -18,7 +18,6 @@ route.register(r'favorites', favoriteviewsets.FavoriteViewSet, basename = 'Favor
 route.register(r'portfolio', portfolioholdingviewsets.PortfolioHoldingViewSet, basename = 'Portfolio')
 route.register(r'alerts', pricealertviewsets.PriceAlertViewSet, basename = 'Alerts')
 route.register(r'notifications', notificationviewsets.NotificationViewSet, basename = 'Notifications')
-route.register(r'health', HealthCheckView, basename = 'Health')
 
 
 urlpatterns = [
@@ -31,6 +30,7 @@ urlpatterns = [
     path('api/coins/', CoinListView.as_view()),  # GET /api/coins/
     path('api/coins/<str:coin_id>/', CoinDetailView.as_view()),      # GET /api/coins/<coin_id>/
     path('api/coins/<str:coin_id>/chart/', CoinChartView.as_view()),  # GET /api/coins/<coin_id>/chart/
+    path('api/health/', HealthCheckView.as_view())
 
 
 ]
