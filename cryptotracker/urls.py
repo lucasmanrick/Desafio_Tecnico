@@ -10,7 +10,7 @@ from pricealert.api import viewsets as pricealertviewsets
 from notification.api import viewsets as notificationviewsets
 from coinpricecache.views import CoinListView, CoinDetailView, CoinChartView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
-
+from .view import HealthCheckView
 
 route = routers.DefaultRouter()
 
@@ -18,6 +18,7 @@ route.register(r'favorites', favoriteviewsets.FavoriteViewSet, basename = 'Favor
 route.register(r'portfolio', portfolioholdingviewsets.PortfolioHoldingViewSet, basename = 'Portfolio')
 route.register(r'alerts', pricealertviewsets.PriceAlertViewSet, basename = 'Alerts')
 route.register(r'notifications', notificationviewsets.NotificationViewSet, basename = 'Notifications')
+route.register(r'health', HealthCheckView, basename = 'Health')
 
 
 urlpatterns = [
