@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosError, AxiosRequestConfig }from 'axios';
 import Constants from 'expo-constants';
 import { useAuthStore } from '../store/authStore';
 
@@ -12,18 +12,6 @@ export const api = axios.create({
     "Content-Type": "application/json",
   }
 });
-
-api.interceptors.request.use(
-  (config) => {
-    const token = useAuthStore.getState().accessToken;
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
 
 
 const refreshAccessToken = async (): Promise<string | null> => {
@@ -47,6 +35,22 @@ const refreshAccessToken = async (): Promise<string | null> => {
   }
 };
 
+api.interceptors.response.use(
+  (response) => response,
+  async (error: AxiosError) => {
+    const originalRequest = error.config as AxiosRequestConfig & { _retry?: boolean };
 
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true; // evita loop infinito
+      const newAccess = await refreshAccessToken();
+      if (newAccess && originalRequest.headers) {
+        originalRequest.headers.Authorization = `Bearer ${newAccess}`;
+        return api(originalRequest); // refaz a requisição com token novo
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 

@@ -9,6 +9,8 @@ export const style = StyleSheet.create({
         justifyContent:'center',
         alignItems:'center',
         backgroundColor: '#2d2d2dff',
+        marginBottom:50,
+        padding:10
     },
 
     modalImage:{

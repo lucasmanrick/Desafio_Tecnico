@@ -2,7 +2,7 @@ import { View, ImageBackground, TouchableOpacity, Text, Alert } from "react-nati
 import { style } from './styles';
 import { LinearGradient } from "expo-linear-gradient";
 import { useAuth } from "../../hooks/useAuth";
-import { RegisterRequest, AddFavoriteRequest, FavoriteCoin } from '../../types/'
+import { RegisterRequest, AddFavoriteRequest, AddFavoriteResponse } from '../../types/'
 import { api } from "../../api/axios";
 
 export default function ModalCripto(props: any) {
@@ -14,7 +14,7 @@ export default function ModalCripto(props: any) {
         const payload: AddFavoriteRequest = { coin_id: CoinId }
 
         try {
-            const response = await api.post<FavoriteCoin>('/favorites/', payload, {
+            const response = await api.post<AddFavoriteResponse>('/favorites/', payload, {
                 headers:{
                     Authorization: `Bearer ${accessToken}`
                 }
@@ -32,7 +32,7 @@ export default function ModalCripto(props: any) {
     }
 
     return (
-        <LinearGradient style={style.modal} id={props.id} 
+        <LinearGradient style={style.modal}  id={props.id} 
             colors={['#000000ff', '#000a70ff']} // cores do gradiente
             start={{ x: 1, y: 0.5 }}
             end={{ x: 1, y: 0 }}

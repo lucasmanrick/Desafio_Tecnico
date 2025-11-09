@@ -64,5 +64,19 @@ export const style = StyleSheet.create({
         display:'flex',
         justifyContent:'center',
         alignItems:'center'
+    },
+
+    loadingContainer:{
+        width: '100%',
+        height: '30%',
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+    },
+
+    loadingText:{
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: 'white'
     }
 })

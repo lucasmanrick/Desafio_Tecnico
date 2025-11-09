@@ -1,26 +1,42 @@
-import { View, ScrollView, Image, TouchableOpacity, Text, ImageBackground, Alert } from "react-native";
+import { View, ScrollView, Image, TouchableOpacity, Text, ImageBackground, Alert, FlatList, Animated } from "react-native";
 import { style } from "./styles";
 import { api } from '../../api/axios';
-import { Coin } from '../../types';
 import { useEffect, useState } from "react";
 import ModalCripto from '../../components/modalCripto/modalCripto';
 import { useNavigation, NavigationProp } from "@react-navigation/native";
-import { StackParamList } from '../../types'
+import { StackParamList, Coin } from '../../types'
 import { useAuth } from '../../hooks/useAuth';
 import { Ionicons } from '@expo/vector-icons';
 
+
 export default function Home() {
-    const [allCoins, setAllCoins] = useState<Coin[]>([])
     const navigation = useNavigation<NavigationProp<StackParamList, 'Login'>>();
     const { isAuthenticated, user, logout } = useAuth();
 
+    //paginação das 100 moedas no front end
+    const [allCoins, setAllCoins] = useState<Coin[]>([])
+    const [visibleCoins, setVisibleCoins] = useState<Coin[]>([]);
+    const [itemsPerPage, setItemsPerPage] = useState(20);
+    const [loading, setLoading] = useState(false);
 
-    const getAllCoins = async () => {
+
+    const loadMoreCoins = () => {
+        const nextItems = allCoins.slice(visibleCoins.length, visibleCoins.length + itemsPerPage);
+        setVisibleCoins([...visibleCoins, ...nextItems]);
+
+        if (nextItems.length < itemsPerPage) {
+            setLoading(false);
+        }
+    };
+
+
+    const getCoins = async () => {
 
         try {
-            const response = await api.get<Coin[]>('/coins/')
+            const response = await api.get<Coin[]>(`/coins/?per_page=100&page=1`)
 
             setAllCoins(response.data)
+
         }
         catch (error) {
             console.log(error)
@@ -29,8 +45,15 @@ export default function Home() {
     }
 
     useEffect(() => {
-        getAllCoins()
+        getCoins()
+        if (visibleCoins.length === 0) {
+            setVisibleCoins(allCoins.slice(0, itemsPerPage));
+        }
     }, [])
+
+    // useEffect(() => {  // se for requisitar moedas por pagina, direto do back end
+    //     getCoins()
+    // }, [page])
 
     return (
         <View style={style.container}>
@@ -44,12 +67,21 @@ export default function Home() {
                 }
 
             </View>
-            <ScrollView contentContainerStyle={style.mainContent}>
-                <View style={style.welcomeMessage}>
-                    <Text style={style.title}>Acompanhe e gerencie de maneira recorrente as suas moedas favoritas</Text>
-                </View>
-                {allCoins.map((coin: any) => (<ModalCripto id={coin.id} key={coin.id} homepage='S' image={coin.image} symbol={coin.symbol} name={coin.name}/>))}
-            </ScrollView>
+
+            <FlatList
+                data={visibleCoins}
+                renderItem={({ item }) => <ModalCripto id={item.id} image={item.image} symbol={item.symbol} name={item.name} homepage="S" />}
+                keyExtractor={(item) => item.id}
+                ListHeaderComponent={
+                    <View style={style.welcomeMessage}>
+                        <Text style={style.title}>
+                            Acompanhe e gerencie de maneira recorrente as suas moedas favoritas
+                        </Text>
+                    </View>}
+                onEndReached={() => { loadMoreCoins(); setLoading(true) }}
+            />
+
+
             {
                 isAuthenticated ? (
                     <TouchableOpacity style={style.quitButton} onPress={() => {
