@@ -20,7 +20,8 @@ export const style = StyleSheet.create({
     },
     textLogin:{
         color: 'white',
-
+        fontSize:18,
+        fontWeight:'bold'
     },
 
      welcomeMessage:{
@@ -49,5 +50,19 @@ export const style = StyleSheet.create({
         flexGrow:1
     },
 
-   
+    quitButton:{
+        width:60,
+        height:60,
+        borderRadius:'50%',
+        borderColor:'white',
+        borderWidth:2,
+        backgroundColor:'#ef0000ff',
+        opacity: 1,
+        position:'absolute',
+        bottom: 100,
+        right: 50,
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center'
+    }
 })
