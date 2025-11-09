@@ -71,16 +71,14 @@ docker-compose run backend pytest
 cd mobile
 npm test
 \`\`\`
-##  Documentação
-- [Documentação da API](./docs/API.md)
-- [Arquitetura do Sistema](./docs/ARCHITECTURE.md)
 ##  Decisões Técnicas
 ### Por que Django + React Native?
-Django oferece ORM robusto e ecosystem maduro. React Native permite desenvolver para Android e# Por que Celery?
+Django oferece ORM robusto e ecosystem maduro. React Native permite desenvolver para Android # Por que Celery?
 Atualização de preços e verificação de alertas devem ser processadas em background sem bloquea# Por que Redis?
 Cache de preços reduz drasticamente chamadas à CoinGecko API (rate limit). Também serve como b# Desafios Enfrentados
 1. **Rate limiting da CoinGecko**: Implementei cache agressivo e Celery Beat para atualizar d **Sincronização mobile-backend**: React Query com cache + invalidação automática resolveu
- **Cálculo de lucro/perda**: Serializers do DRF calculam dinamicamente baseado em preços atu  Segurança
+ **Cálculo de lucro/perda**: Serializers do DRF calculam dinamicamente baseado em preços atual  
+ Segurança
 - Passwords hasheados com Django defaults
 - JWT tokens com expiração
 - CORS configurado
@@ -93,5 +91,4 @@ cd mobile/android
 # APK: android/app/build/outputs/apk/release/app-release.apk
 \`\`\`
 ##  Autor
-23
 Lucas Manrick Teodoro da Fonseca - [lucasmanrick.ipms@gmail.com]
