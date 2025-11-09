@@ -6,14 +6,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import {api} from '../../api/axios';
 import { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '../../types';
 import { useAuthStore } from "../../store/authStore";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { StackParamList } from "../../types";
 
-
-export default function login(){
+export default function Login(){
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [firstName,setFirstName] = useState('')
     const [lastName,setLastName] = useState('')
     const [registerTime, setRegisterTime] = useState('N')
+
+    const navigation = useNavigation<NavigationProp<StackParamList,'Login'>>();
 
     const loginStore = useAuthStore((state) => state.login);
     const sendLogin = async () => {
@@ -34,6 +37,8 @@ export default function login(){
 
         registerTime === 'N' ? Alert.alert("Sucesso", "Login efetuado com sucesso!") : ''
         console.log(`usuario logado com sucesso: ${response.data.user}`)
+
+        navigation.navigate('Home')
     }
     catch (error) {
         console.log(error)

@@ -3,73 +3,51 @@ import { StyleSheet } from "react-native";
 export const style = StyleSheet.create({
     container:{
         padding:0,
-        marginTop: 50,
-        width: '100%',
-        height: '100%'
+        flex:1,
+        backgroundColor: 'black'
     },
 
     header:{
         width: '100%',
-        height: '20%',
+        height: '10%',
         // backgroundColor:'#ffffffff',
         // boxShadow: '0px 20px 20px rgba(0, 0, 0, 0.25)',
         display:'flex',
-        justifyContent:'center',
-        alignItems:'center'
+        flexDirection:'row',
+        justifyContent:'space-between',
+        alignItems:'center',
+        padding:10
+    },
+    textLogin:{
+        color: 'white',
+
     },
 
+     welcomeMessage:{
+        width: '100%',
+        height: 300,
+        display:'flex',
+        justifyContent:'center',
+        alignItems:'center',
+
+     },
+
     title:{
-        fontSize: 40,
+        textAlign:'center',
+        fontSize: 30,
         fontWeight: '900',
         color: 'white'
     },
 
     mainContent:{
         display:'flex',
-        justifyContent:'center',
-        alignItems:'center',
-        width: '100%',
-        height: '70%',
-        overflow:'scroll'
-    },
-
-    modal:{
-        width: '80%',
-        height: 100,
-        display:'flex',
-        justifyContent:'center',
-        alignItems:'center'
-    },
-
-    modalImage:{
-        width: '100%',
-        height: '100%',
-        display:'flex',
         flexDirection:'column',
-        justifyContent:'flex-end'
-    },
-
-    text:{
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: 'white'
-    },
-
-    inputStyle:{
-        width: '70%',
-        height: 50,
-        borderWidth: 1,
-        borderRadius: 10,
-        backgroundColor:'white'
-    },
-
-    buttonContainer:{
-        width: '100%',
-        height: '20%',
-        display:'flex',
-        justifyContent:'space-evenly',
         alignItems:'center',
-        marginTop: 5
+        padding:10,
+        gap:50,
+        width: '100%',
+        flexGrow:1
     },
 
+   
 })

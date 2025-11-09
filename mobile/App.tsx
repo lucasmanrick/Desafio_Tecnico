@@ -4,8 +4,9 @@ import Login from './src/screens/login';
 import Home from './src/screens/home';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {StackParamList} from './src/types';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<StackParamList>();
 
 export default function App() {
   return (
