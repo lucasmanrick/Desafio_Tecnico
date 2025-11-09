@@ -1,12 +1,15 @@
 import { View, ScrollView, Image, TouchableOpacity, Text, ImageBackground, Alert, FlatList, Animated } from "react-native";
+import { useEffect, useState, useCallback, use } from "react";
+import { useFocusEffect } from '@react-navigation/native';
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { Ionicons } from '@expo/vector-icons';
+
+// imports do proprio projeto
 import { style } from "./styles";
 import { api } from '../../api/axios';
-import { useEffect, useState } from "react";
 import ModalCripto from '../../components/modalCripto/modalCripto';
-import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { StackParamList, Coin } from '../../types'
 import { useAuth } from '../../hooks/useAuth';
-import { Ionicons } from '@expo/vector-icons';
 
 
 export default function Home() {
@@ -18,6 +21,8 @@ export default function Home() {
     const [visibleCoins, setVisibleCoins] = useState<Coin[]>([]);
     const [itemsPerPage, setItemsPerPage] = useState(20);
     const [loading, setLoading] = useState(false);
+
+
 
 
     const loadMoreCoins = () => {
@@ -34,9 +39,12 @@ export default function Home() {
 
         try {
             const response = await api.get<Coin[]>(`/coins/?per_page=100&page=1`)
-
             setAllCoins(response.data)
+             // se for a primeira requisição das moedas (assim que abre a pagina ou volta pra ela, nós passamos visiblecoins para 0 e carregamos 20 moedas novamente) 
+            setVisibleCoins(response.data.slice(0, itemsPerPage));
+            
 
+            
         }
         catch (error) {
             console.log(error)
@@ -44,16 +52,18 @@ export default function Home() {
         }
     }
 
-    useEffect(() => {
-        getCoins()
-        if (visibleCoins.length === 0) {
-            setVisibleCoins(allCoins.slice(0, itemsPerPage));
-        }
-    }, [])
 
-    // useEffect(() => {  // se for requisitar moedas por pagina, direto do back end
+    useFocusEffect(
+        useCallback(() => {
+            setAllCoins([])
+            getCoins();
+        }, [])
+    );
+
+
+    // useEffect(() => {
     //     getCoins()
-    // }, [page])
+    // }, []);
 
     return (
         <View style={style.container}>
@@ -70,7 +80,7 @@ export default function Home() {
 
             <FlatList
                 data={visibleCoins}
-                renderItem={({ item }) => <ModalCripto id={item.id} image={item.image} symbol={item.symbol} name={item.name} homepage="S" />}
+                renderItem={({ item }) => <ModalCripto id={item.id} currentPrice={item.current_price} image={item.image} symbol={item.symbol} name={item.name} homepage="S" />}
                 keyExtractor={(item) => item.id}
                 ListHeaderComponent={
                     <View style={style.welcomeMessage}>

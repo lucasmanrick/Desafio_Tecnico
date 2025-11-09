@@ -1,13 +1,14 @@
 import { View, ImageBackground, TouchableOpacity, Text, Alert } from "react-native";
 import { style } from './styles';
 import { LinearGradient } from "expo-linear-gradient";
-import { useAuth } from "../../hooks/useAuth";
+import { useAuthStore } from "../../store/authStore";
 import { RegisterRequest, AddFavoriteRequest, AddFavoriteResponse } from '../../types/'
 import { api } from "../../api/axios";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function ModalCripto(props: any) {
-    const { isAuthenticated , accessToken} = useAuth();
-
+    const { accessToken } = useAuthStore((state) => state);
+    const {isAuthenticated} = useAuth();
 
     const favoriteCoin = async (CoinId: string) => {
 
@@ -38,9 +39,13 @@ export default function ModalCripto(props: any) {
             end={{ x: 1, y: 0 }}
         >
             <ImageBackground source={{ uri: props.image }} style={style.modalImage} resizeMode="contain">
-                <Text style={style.title}>{props.name}</Text>
+                <Text style={style.title}>{props.name.toUpperCase()}</Text>
                 <View style={style.infoView}>
-                    <Text style={style.symbol}>{props.symbol.toUpperCase()}</Text>
+                    <View>
+                        <Text style={style.symbol}>{props.symbol.toUpperCase()}</Text>
+                        <Text style={style.text}>{`$${props.currentPrice}`}</Text>
+                        {/* <Text style={style.text}>{`$${props.priceChange}`}</Text> */}
+                    </View>
                     {isAuthenticated && props.homepage === 'S' ?
                         (<View style={style.buttonContainer}>
                             <TouchableOpacity onPress={() => favoriteCoin(props.id)} style={style.buttonStyle}>
