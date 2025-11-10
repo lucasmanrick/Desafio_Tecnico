@@ -27,7 +27,6 @@ npm run android
 - PostgreSQL
 - Redis + Celery
 - Docker Compose
-21
 - JWT Authentication
 **Mobile:**
 - React Native 0.73
@@ -66,7 +65,6 @@ cd backend
 docker-compose run backend pytest
 \`\`\`
 **Mobile:**
-22
 \`\`\`bash
 cd mobile
 npm test
@@ -84,11 +82,5 @@ Cache de preços reduz drasticamente chamadas à CoinGecko API (rate limit). Tam
 - CORS configurado
 - Validação de inputs com serializers
 - HTTPS em produção (recomendado)
-##  Build Android
-\`\`\`bash
-cd mobile/android
-./gradlew assembleRelease
-# APK: android/app/build/outputs/apk/release/app-release.apk
-\`\`\`
 ##  Autor
 Lucas Manrick Teodoro da Fonseca - [lucasmanrick.ipms@gmail.com]
